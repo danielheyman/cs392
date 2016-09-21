@@ -1,0 +1,20 @@
+COMPLILER      = gcc-4.8
+FLAGS = -Wall -Werror --pedantic -std=c99
+LIB = ../../lib
+INCLUDE = ../../include
+TEST = ../../test
+
+all:
+	$(COMPLILER) -c *.c $(FLAGS) -I$(INCLUDE)
+	ar -rc libmy.a *.o
+	ranlib libmy.a
+	mv libmy.a $(LIB)
+clean:
+	rm -f *.o
+	rm -f *.o
+fclean: clean
+	rm -f $(LIB)/libmy.a
+re: fclean all
+testmy:
+	$(COMPLILER) $(TEST)/testmy.c -o $(TEST)/testmy $(FLAGS) -I$(INCLUDE) -L$(LIB) -lmy
+	$(TEST)/testmy
