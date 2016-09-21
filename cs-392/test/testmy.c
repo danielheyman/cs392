@@ -7,6 +7,15 @@ I pledge my honor that I have abided by the Stevens Honor System.
 #include "my.h"
 
 int main(int argc, char **argv) {
+    char s[] = "hello";
+    char s2[13] = "";
+    char s3[13] = "hello";
+    char *temp = my_strconcat(NULL, NULL);
+    char *s4 = my_strdup(s3);
+    char s5[] = "0";
+    char s6[] = "2147483647";
+    char s7[] = "-2147483648";
+    char* test;
     
     my_str("my_char tests:\n");
     my_char('F');
@@ -87,14 +96,88 @@ int main(int argc, char **argv) {
     my_str("\t\t = -1\n");
     my_int(my_revstr(""));
     my_str("\t\t = 0\n");
-    char s[] = "hello";
     my_int(my_revstr(s));
     my_str("\t\t = 5\n");
     my_str(s);
     my_str("\t\t = olleh\n");
-    
+
+    /*Assignment 2*/
+
+    my_str("\nmy_strfind tests:\n");
+    test = my_strfind("hello", 'l'); 
+    my_str(test);
+    my_str("\t\t = llo\n");
+    test = my_strfind("hello", 'p'); 
+    my_str(test);
+    my_str("\t\t = nothing\n");
+    test = my_strfind(NULL, 'r');
+    my_str("\t\t = nothing\n");
+
+    my_str("\nmy_strrfind tests:\n");
+    test = my_strrfind("hello", 'l'); 
+    my_str(test);
+    my_str("\t\t = lo\n");
+    test = my_strrfind("hello", 'p'); 
+    my_str(test);
+    my_str("\t\t = nothing\n");
+    test = my_strrfind(NULL, 'r');
+    my_str("\t\t = nothing\n");
+
+    my_str("\nmy_strcmp tests:\n");
+    my_int(my_strcmp("aaa", "bbb"));
+    my_str("\t\t = -1\n");
+    my_int(my_strcmp("aaa", "aaa"));
+    my_str("\t\t = 0\n");
+    my_int(my_strcmp("bbb", "aaa"));
+    my_str("\t\t = 1\n");
+    my_int(my_strcmp(NULL, NULL));
+    my_str("\t\t = 0\n");
+    my_int(my_strcmp(NULL, "aaa"));
+    my_str("\t\t = -1\n");
+    my_int(my_strcmp("bbb", NULL));
+    my_str("\t\t = 1\n");
+
+    my_str("\nmy_strncmp tests:\n");
+    my_int(my_strncmp("water", "weather", 2));
+    my_str("\t\t = -1\n");
+    my_int(my_strncmp("wet", "weather", 2));
+    my_str("\t\t = 0\n");
+    my_int(my_strncmp("weather", "water", 2));
+    my_str("\t\t = 1\n");
+    my_int(my_strncmp(NULL, NULL, 3));
+    my_str("\t\t = 0\n");
+    my_int(my_strncmp(NULL, "aaa", 3));
+    my_str("\t\t = -1\n");
+    my_int(my_strncmp("bbb", NULL, 3));
+    my_str("\t\t = -1\n");
+    my_int(my_strncmp("bbb", "aaa", 0));
+    my_str("\t\t = 0\n");
+
+    my_str("\nmy_strcpy tests:\n");
+    test = my_strdup("$$$$$$$$$$$$$$$");
+    my_str(my_strcpy(test, "ABCD")); 
+    my_str("\t\t = ABCD\n");
+    test = my_strdup("Test");
+    my_str(my_strcpy(test, "")); 
+    my_str("\t\t = nothing\n");
+    my_str(my_strcpy(test, NULL)); 
+    my_str("\t\t = nothing\n");
+    my_str(my_strcpy(NULL, "Test"));
+    my_str("\t\t = nothing\n");
+    my_str(my_strcpy(test, "ABCDE"));
+    my_str("\t\t = ABCDE\n");
+
+    my_str("\nmy_strncpy tests:\n");
+    test = my_strdup("hello");
+    my_str(my_strncpy(test, "meep", 3)); 
+    my_str("\t\t = me\n");
+    test = my_strdup("test");
+    my_str(my_strncpy(test, "", 6)); 
+    my_str("\t\t = nothing\n");
+    my_str(my_strncpy(test, NULL, 50)); 
+    my_str("\t\t = test\n");
+
     my_str("\nmy_strcat tests:\n");
-    char s2[13] = "";
     my_strcat(NULL, NULL);
     my_strcat(s2, NULL);
     my_strcat(s2, "a");
@@ -105,15 +188,12 @@ int main(int argc, char **argv) {
     
     my_str("\nmy_strdup tests:\n");
     my_str(my_strdup(NULL));
-    char s3[13] = "hello";
-    char *s4 = my_strdup(s3);
     s3[0] = 'm';
     my_str(s3);
     my_str(s4);
-    my_str("\t = mellohello\n");
+    my_str("\t = mellohello\n"); 
     
     my_str("\nmy_strconcat tests:\n");
-    char *temp = my_strconcat(NULL, NULL);
     free(temp);
     temp = my_strconcat(s3, NULL);
     my_str(temp);
@@ -151,9 +231,6 @@ int main(int argc, char **argv) {
     free(s4);
     
     my_str("\nmy_atoi tests:\n");
-    char s5[] = "0";
-    char s6[] = "2147483647";
-    char s7[] = "-2147483648";
     my_int(my_atoi(s5));
     my_str("\t\t = 0\n");
     my_int(my_atoi(NULL));
