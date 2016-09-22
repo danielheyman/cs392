@@ -139,17 +139,17 @@ int main(int argc, char **argv) {
 
     my_str("\nmy_strncmp tests:\n");
     my_int(my_strncmp("water", "weather", 2));
-    my_str("\t\t = -1\n");
+    my_str("\t\t = -4\n");
     my_int(my_strncmp("wet", "weather", 2));
     my_str("\t\t = 0\n");
     my_int(my_strncmp("weather", "water", 2));
-    my_str("\t\t = 1\n");
+    my_str("\t\t = 4\n");
     my_int(my_strncmp(NULL, NULL, 3));
     my_str("\t\t = 0\n");
     my_int(my_strncmp(NULL, "aaa", 3));
     my_str("\t\t = -1\n");
     my_int(my_strncmp("bbb", NULL, 3));
-    my_str("\t\t = -1\n");
+    my_str("\t\t = 1\n");
     my_int(my_strncmp("bbb", "aaa", 0));
     my_str("\t\t = 0\n");
 

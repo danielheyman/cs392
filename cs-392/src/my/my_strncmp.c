@@ -14,7 +14,7 @@ int my_strncmp(char* a, char* b, int n){
 
     int counter = 0;
 
-    if((a == NULL && b == NULL) || (n == 0 && a != NULL && b != NULL)){
+    if((a == NULL && b == NULL) || n <= 0){
         return 0;
     }
 
@@ -26,7 +26,11 @@ int my_strncmp(char* a, char* b, int n){
     	return 1;
     }
 
-    for( ; *a && *b && (*a == *b) && counter < n - 1; counter++, a++, b++);
+    while(*a != '\0' && *b != '\0' && (*a == *b) && counter < n - 1) {
+        counter++;
+        a++;
+        b++;
+    }
 
     return *a - *b;
 }
