@@ -168,14 +168,19 @@ int main(int argc, char **argv) {
     my_str("\t\t = ABCDE\n");
 
     my_str("\nmy_strncpy tests:\n");
-    test = my_strdup("hello");
-    my_str(my_strncpy(test, "meep", 3)); 
-    my_str("\t\t = me\n");
-    test = my_strdup("test");
-    my_str(my_strncpy(test, "", 6)); 
+    test = my_strdup("$$$$$$$$$$$$$$$");
+    my_str(my_strcpy(test, "Test")); 
+    my_str("\t\t = Test\n");
+    test = my_strdup("Test");
+    my_str(my_strcpy(test, "")); 
     my_str("\t\t = nothing\n");
-    my_str(my_strncpy(test, NULL, 50)); 
-    my_str("\t\t = test\n");
+    my_str(my_strcpy(test, NULL)); 
+    my_str("\t\t = nothing\n");
+    my_str(my_strcpy(NULL, "Hello")); 
+    my_str("\t\t = nothing\n");
+    test = my_strdup("Hello");
+    my_str(my_strcpy(test, "Tests")); 
+    my_str("\t\t = Tests\n");
 
     my_str("\nmy_strcat tests:\n");
     my_strcat(NULL, NULL);

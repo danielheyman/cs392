@@ -7,7 +7,7 @@
  if a < b, return negative number 
  if a > b, return positive number
  Two NULL are equal.
- NULL is always less than a normal string*/
+ NULL is always less than a normal string */
 
 int my_strcmp(char* a, char* b){
 

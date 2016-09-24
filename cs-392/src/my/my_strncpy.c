@@ -5,22 +5,33 @@
   Copies the characters from src into dst overwriting what's already in there.
   Always copies a '\0'
   Assumes dst has enough memory allocated for the new string if it is longer.
-  Does not allocate memory*/
+  Does not allocate memory */
 
-  char* my_strncpy(char* dst, char* src, int n){
+  char *my_strncpy(char *a, char *b, int n)
+  {
+    int counter = 0;
 
-     int counter;
+    if(a == NULL){
 
-    if(dst != NULL && src != NULL && n > 0)
-    {
-        counter = 0;
-
-        for( ; src[counter] && counter < n; counter++)
-            dst[counter] = src[counter];
-
-        if(n > my_strlen(src))
-            dst[counter] = '\0';
+      return NULL;
     }
 
-    return dst;
-}
+    if(b == NULL){
+
+      return a;
+    }
+
+    if(n < 0){
+      n = 0;
+    }
+
+    while((b != NULL) && (b[counter] != '\0') && (counter < n))
+    {
+      a[counter] = b[counter];
+      counter++;
+    }
+    
+    a[counter] = '\0';
+    
+    return a;
+  }
