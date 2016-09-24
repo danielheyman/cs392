@@ -1,5 +1,12 @@
 #include "my.h"
 
+/* Authors: Carla Noshi and Daniel Heyman
+
+ Allocates new memory 
+ Copies concatenated strings in that new memory 
+ Returns pointer to it
+ If both NULL return NULL */
+
 char *my_strnconcat(char *a, char *b, int n) {
     if(a == NULL && b == NULL) return NULL;
     

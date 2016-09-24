@@ -1,6 +1,6 @@
 #include "my.h"
 
-/* Author: Carla Noshi
+/* Authors: Carla Noshi and Daniel Heyman
 
   Compares strings by ascii value
   If a and b are identical, return 0. 

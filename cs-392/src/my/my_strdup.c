@@ -1,5 +1,11 @@
 #include "my.h"
 
+/* Authors: Carla Noshi and Daniel Heyman
+
+ Allocates new memory 
+ Copies str into that new memory 
+ returns pointer to new string */
+
 char *my_strdup(char *str) {
     if(str == NULL) return NULL;
     

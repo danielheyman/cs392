@@ -1,5 +1,11 @@
 #include "my.h"
 
+/* Authors: Carla Noshi and Daniel Heyman
+
+ Returns the int represented by the ascii string
+ Handles negatives.
+ Ignores preceding characters and trailing numbers and chars */
+
 int my_atoi(char *s) {
     if(s == NULL) return 0;
     int num = 0;

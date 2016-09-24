@@ -1,6 +1,6 @@
 #include "my.h"
 
-/* Author: Carla Noshi
+/* Authors: Carla Noshi and Daniel Heyman
 
   Returns a pointer to the last char in the string which matches.
   Return NULL if the letter is not found. */
