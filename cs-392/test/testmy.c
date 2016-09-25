@@ -136,6 +136,10 @@ int main(int argc, char **argv) {
     my_str("\t\t = -1\n");
     my_int(my_strcmp("bbb", NULL));
     my_str("\t\t = 1\n");
+    my_int(my_strcmp("water", "weather"));
+    my_str("\t\t = -4\n");
+    my_int(my_strcmp("weather", "water"));
+    my_str("\t\t = 4\n");
 
     my_str("\nmy_strncmp tests:\n");
     my_int(my_strncmp("water", "weather", 2));
@@ -156,30 +160,38 @@ int main(int argc, char **argv) {
     my_str("\nmy_strcpy tests:\n");
     test = my_strdup("$$$$$$$$$$$$$$$");
     my_str(my_strcpy(test, "ABCD")); 
+    free(test);
     my_str("\t\t = ABCD\n");
     test = my_strdup("Test");
     my_str(my_strcpy(test, "")); 
+    free(test);
     my_str("\t\t = nothing\n");
     my_str(my_strcpy(test, NULL)); 
+    free(test);
     my_str("\t\t = nothing\n");
     my_str(my_strcpy(NULL, "Test"));
     my_str("\t\t = nothing\n");
     my_str(my_strcpy(test, "ABCDE"));
+    free(test);
     my_str("\t\t = ABCDE\n");
 
     my_str("\nmy_strncpy tests:\n");
     test = my_strdup("$$$$$$$$$$$$$$$");
     my_str(my_strcpy(test, "Test")); 
+    free(test);
     my_str("\t\t = Test\n");
     test = my_strdup("Test");
     my_str(my_strcpy(test, "")); 
+    free(test);
     my_str("\t\t = nothing\n");
     my_str(my_strcpy(test, NULL)); 
+    free(test);
     my_str("\t\t = nothing\n");
     my_str(my_strcpy(NULL, "Hello")); 
     my_str("\t\t = nothing\n");
     test = my_strdup("Hello");
     my_str(my_strcpy(test, "Tests")); 
+    free(test);
     my_str("\t\t = Tests\n");
 
     my_str("\nmy_strcat tests:\n");

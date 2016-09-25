@@ -11,19 +11,19 @@
 
 int my_strcmp(char* a, char* b){
 
-		if(a == NULL && b == NULL){
-       		return 0;
-	    }
+	if(a == NULL && b == NULL){
+   		return 0;
+    }
 
-	    if(a == NULL){
-	        return -1;
-	    }
+    if(a == NULL){
+        return -1;
+    }
 
-	    else if(b == NULL){
-	        return 1;
-
-	    for( ; *a && *b && (*a == *b); a++, b++);
-	    
+    else if(b == NULL){
+        return 1;
 	}
+	
+	for( ; *a && *b && (*a == *b); a++, b++);
+	
 	return *a - *b;
 }
