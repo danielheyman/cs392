@@ -8,18 +8,15 @@
   Does not allocate memory */
 
 char* my_strcpy(char* dst, char* src){
-	char* dstStart;
+	char* dstStart = dst;
 
     if(dst != NULL && src != NULL)
     {
-        dstStart = dst;
-
         for( ; *src; src++, dst++)
             *dst = *src;
 
         *dst = '\0';
-        dst = dstStart;
     }
 
-    return dst;
+    return dstStart;
 }
