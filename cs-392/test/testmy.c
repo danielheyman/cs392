@@ -249,15 +249,15 @@ int main(int argc, char **argv) {
     my_str("\t\t = 0\n");
     my_int(my_atoi(NULL));
     my_str("\t\t = 0\n");
-    my_int(my_atoi(my_strdup("2147483647")));
+    my_int(my_atoi("2147483647"));
     my_str("\t = 2147483647\n");
-    my_int(my_atoi(my_strdup("-2147483648")));
+    my_int(my_atoi("-2147483648"));
     my_str("\t = -2147483648\n");
-    my_int(my_atoi(my_strdup("--54")));
+    my_int(my_atoi("--54"));
     my_str("\t = 54\n");
-    my_int(my_atoi(my_strdup("a-b54sc7-d")));
+    my_int(my_atoi("a-b54sc7-d"));
     my_str("\t = -54\n");
-    my_int(my_atoi(my_strdup("abcd")));
+    my_int(my_atoi("abcd"));
     my_str("\t = -0\n");
     
     
