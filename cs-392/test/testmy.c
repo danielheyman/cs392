@@ -161,6 +161,7 @@ int main(int argc, char **argv) {
     test = my_strdup("$$$$$$$$$$$$$$$");
     my_str(my_strcpy(test, "ABCD")); 
     my_str("\t\t = ABCD\n");
+    free(test);
     test = my_strdup("Test");
     my_str(my_strcpy(test, "")); 
     my_str("\t\t = nothing\n");
