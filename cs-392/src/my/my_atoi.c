@@ -11,12 +11,12 @@ int my_atoi(char *s) {
     int num = 0;
     
     int neg = 1;
-    if(*s == '-') {
+    while(*s != '\0' && !(*s >= '0' && *s <= '9')) {
+        if(*s == '-') neg *= -1;
         s++;
-        neg = -1;
     }
     
-    while(*s != '\0') {
+    while(*s != '\0' && *s >= '0' && *s <= '9') {
         num = num * 10 + neg * (*(s++) - '0');
     }
     

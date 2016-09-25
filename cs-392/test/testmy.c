@@ -13,8 +13,6 @@ int main(int argc, char **argv) {
     char *temp = my_strconcat(NULL, NULL);
     char *s4 = my_strdup(s3);
     char s5[] = "0";
-    char s6[] = "2147483647";
-    char s7[] = "-2147483648";
     char* test;
     
     my_str("my_char tests:\n");
@@ -251,10 +249,16 @@ int main(int argc, char **argv) {
     my_str("\t\t = 0\n");
     my_int(my_atoi(NULL));
     my_str("\t\t = 0\n");
-    my_int(my_atoi(s6));
+    my_int(my_atoi(my_strdup("2147483647")));
     my_str("\t = 2147483647\n");
-    my_int(my_atoi(s7));
+    my_int(my_atoi(my_strdup("-2147483648")));
     my_str("\t = -2147483648\n");
+    my_int(my_atoi(my_strdup("--54")));
+    my_str("\t = 54\n");
+    my_int(my_atoi(my_strdup("a-b54sc7-d")));
+    my_str("\t = -54\n");
+    my_int(my_atoi(my_strdup("abcd")));
+    my_str("\t = -0\n");
     
     
     return 0;
