@@ -5,22 +5,20 @@
  #include "list.h"
 
 void traverse_int(struct s_node* head){
-
-	struct s_node* nextNode = head;
     int* pnt;
 
-    while(nextNode != NULL)
+    while(head != NULL)
     {
-        if(nextNode->elem == NULL)
+        if(head->elem == NULL)
             my_str("NULL");
         else
         {
-            pnt = (int*) nextNode->elem;
+            pnt = (int*) head->elem;
             my_int(*pnt);
         }
 
         my_str(" ");
-        nextNode = nextNode->next;
+        head = head->next;
     }
 
     my_char('\n');

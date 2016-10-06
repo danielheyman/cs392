@@ -6,17 +6,15 @@
 
 void traverse_string(struct s_node* head){
 
-	struct s_node* nextNode = head;
-
-    while(nextNode != NULL)
+    while(head != NULL)
     {
-        if(nextNode->elem == NULL)
+        if(head->elem == NULL)
             my_str("NULL");
         else
-            my_str(nextNode->elem);
+            my_str(head->elem);
 
         my_str(" ");
-        nextNode = nextNode->next;
+        head = head->next;
     }
 
     my_char('\n');
