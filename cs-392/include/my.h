@@ -13,6 +13,7 @@ I pledge my honor that I have abided by the Stevens Honor System.
 
 #include <unistd.h> 
 #include <stdlib.h>
+#include <limits.h>
 
 void my_char(char); 
 void my_str(char*); 

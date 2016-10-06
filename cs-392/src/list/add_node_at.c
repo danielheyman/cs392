@@ -6,24 +6,15 @@
 
  #include "list.h"
 
-void add_node_at(struct s_node* node, struct s_node** head, int n){
-
-	struct s_node* nextNode;
-
-    if(head != NULL && node != NULL)
-    {
-        if(n == 0 || *head == NULL)
-            add_node(node, head);
-        else
-        {
-            nextNode = *head;
-            n--;
-
-            for( ; n > 0 && nextNode->next != NULL; nextNode = nextNode->next, n--)
-                ;
-
-            node->next = nextNode->next;
-            nextNode->next = node;
-        }
+void add_node_at(struct s_node* node, struct s_node** head, int n) {
+    if(node == NULL || node->elem == NULL) return;
+    
+    if(*head == NULL || n == 0) {
+        add_node(node, head);
+    } else {
+        struct s_node *loc = *head;
+        while(--n > 0 || loc->next != NULL) loc = loc->next;
+        loc->next = node;
+        node->prev = loc;
     }
 }

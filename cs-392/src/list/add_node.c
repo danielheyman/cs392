@@ -10,12 +10,11 @@ void add_node(struct s_node* node, struct s_node** head){
 
 	if(node != NULL && head != NULL)
     {
-        if(*head == NULL)
-            *head = node;
-        else
+        if(*head != NULL)
         {
             node->next = *head;
-            *head = node;
+            (*head)->prev = node;
         }
+        *head = node;
     }
 }
