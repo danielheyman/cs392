@@ -5,30 +5,10 @@
 
  #include "list.h"
 
-void* remove_node_at(struct s_node** head, int n){
-	struct s_node* prev;
-    struct s_node* nextNode;
-    void* returnElem = NULL;
-
-    if(head != NULL)
-    {
-        if(n == 0)
-            returnElem = remove_node(head);
-        else
-        {
-            nextNode = (*head)->next;
-
-            while(n > 0 && nextNode != NULL)
-            {
-                prev = nextNode;
-                nextNode = nextNode->next;
-                n--;
-            }
-
-            returnElem = prev->elem;
-            prev->next = nextNode;
-        }
-    }
-
-    return returnElem;
-}
+void* remove_node_at(struct s_node** head, int n) {
+    if(head == NULL || *head == NULL) return NULL;
+    
+    struct s_node *loc = *head;
+    while(n-- > 0 || loc->next != NULL) loc = loc->next;
+    return remove_node(&loc);
+ }

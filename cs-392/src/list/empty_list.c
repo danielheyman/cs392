@@ -7,8 +7,6 @@
 #include "list.h"
 
 void empty_list(struct s_node** head){
-
-	 if(head != NULL && *head != NULL){
-      for( ; *head != NULL; remove_node(head)){}
-  }
+	if(head == NULL) return;
+	for( ; *head != NULL; remove_last(head));
 }

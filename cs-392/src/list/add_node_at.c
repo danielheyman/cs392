@@ -7,7 +7,7 @@
  #include "list.h"
 
 void add_node_at(struct s_node* node, struct s_node** head, int n) {
-    if(node == NULL || node->elem == NULL) return;
+    if(head == NULL || node == NULL || node->elem == NULL) return;
     
     if(*head == NULL || n == 0) {
         add_node(node, head);

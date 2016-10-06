@@ -5,16 +5,13 @@
  #include "list.h"
 
 int count_s_nodes(struct s_node* head){
-
 	unsigned int num = 0;
 
     if(head != NULL)
     {
-        struct s_node* nextElem = head;
-
-        while(nextElem != NULL)
+        while(head->next)
         {
-            nextElem = nextElem->next;
+            head = head->next;
             num++;
         }
     }

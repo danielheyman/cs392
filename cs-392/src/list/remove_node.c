@@ -7,18 +7,19 @@
  #include "list.h"
 
 void* remove_node(struct s_node** node){
-
-	void* nodeelem = NULL;
-    struct s_node* headNext;
-
-    if(node != NULL && *node != NULL)
-    {
-        headNext = *node;
-        nodeelem = (*node)->elem;
-        *node = headNext->next;
-        free(headNext);
-        headNext = NULL;
+    if(node == NULL || *node == NULL) return NULL;
+    
+    void* elem = (*node)->elem;
+    if((*node)->prev && (*node)->next) {
+        (*node)->prev->next = (*node)->next;
+        (*node)->next->prev = (*node)->prev;
+    } else if((*node)->prev) {
+        (*node)->prev->next = NULL;
+    } else if((*node)->next) {
+        (*node)->next->prev = NULL;
     }
+    free(*node);
+    *node = NULL;
 
-    return nodeelem;
+    return elem;
 }

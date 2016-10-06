@@ -6,19 +6,8 @@
 #include "list.h"
 
 struct s_node* node_at(struct s_node* head, int n){
-
-	struct s_node* nextNode = NULL;
-
-    if(head != NULL)
-    {
-        nextNode = head;
-
-        while(nextNode->next != NULL && n > 0)
-        {
-            nextNode = nextNode->next;
-            n--;
-        }
-    }
-
-    return nextNode;
+    if(head == NULL) return NULL;
+    
+    while(n-- > 0 || head->next != NULL) head = head->next;
+    return head;
 }

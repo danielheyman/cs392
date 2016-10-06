@@ -6,19 +6,7 @@
  #include "list.h"
 
 void* elem_at(struct s_node* head, int n){
-
-	void* returnElem = NULL;
-    struct s_node* counter;
-
-    if(head != NULL)
-    {
-        counter = head;
-
-        for( ; n > 0 && counter->next != NULL; counter = counter->next, n--)
-            ;
-
-        returnElem = counter->elem;
-    }
-
-    return returnElem;
+    if(head == NULL) return NULL;
+    
+    return node_at(head, n)->elem;
 }
