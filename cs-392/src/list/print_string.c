@@ -1,4 +1,5 @@
 /*
+ Authors: Daniel Heyman & Carla Noshi
  Prints the elem of node as a strings
 */
 #include "list.h"

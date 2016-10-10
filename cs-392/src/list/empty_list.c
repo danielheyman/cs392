@@ -1,4 +1,5 @@
 /*
+ Authors: Daniel Heyman & Carla Noshi
  Frees all the nodes in the list.
  CHALLENGE: Write in two lines (allowed to use other methods in 
  this assignment)

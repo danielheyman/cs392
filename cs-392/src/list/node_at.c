@@ -1,4 +1,5 @@
 /*
+ Authors: Daniel Heyman & Carla Noshi
  Returns a pointer to the node at index n or the last node.
  Parse once
 */

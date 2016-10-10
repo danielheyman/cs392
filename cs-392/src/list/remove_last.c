@@ -1,4 +1,5 @@
 /*
+ Authors: Daniel Heyman & Carla Noshi
  Removes the last node from the list.
  Parse Once.
 */

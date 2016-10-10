@@ -1,4 +1,5 @@
 /*
+ Authors: Daniel Heyman & Carla Noshi
  Adds a node at index n of a list or at the end of the list if n is 
  too large.
  Parse once

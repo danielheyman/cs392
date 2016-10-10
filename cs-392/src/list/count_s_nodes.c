@@ -1,4 +1,5 @@
 /*
+ Authors: Daniel Heyman & Carla Noshi
  Returns the value the length of the list
  Parse Once.
 */

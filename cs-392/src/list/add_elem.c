@@ -1,4 +1,5 @@
 /* 
+ Authors: Daniel Heyman & Carla Noshi
  Creates a new node with elem and adds it to head. DO NOT add a NULL 
  elem.
  DOES NOT PARSE

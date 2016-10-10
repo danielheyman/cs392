@@ -1,4 +1,5 @@
 /*
+ Authors: Daniel Heyman & Carla Noshi
  Inserts a node at the start of the list. DO NOT add a NULL pointer or
  a node with a NULL elem.
  DOES NOT PARSE
