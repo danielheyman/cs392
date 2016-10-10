@@ -18,6 +18,4 @@ void debug_string(struct s_node* head) {
         
         head = head->next;
     }
-
-    my_char('\n');
 }

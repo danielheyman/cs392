@@ -8,5 +8,7 @@
 
 void empty_list(struct s_node** head){
 	if(head == NULL) return;
-	for( ; *head != NULL; remove_last(head));
+	while(*head != NULL) {
+		remove_last(head);
+	}
 }

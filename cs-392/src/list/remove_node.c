@@ -10,16 +10,20 @@ void* remove_node(struct s_node** node){
     if(node == NULL || *node == NULL) return NULL;
     
     void* elem = (*node)->elem;
-    if((*node)->prev && (*node)->next) {
-        (*node)->prev->next = (*node)->next;
-        (*node)->next->prev = (*node)->prev;
-    } else if((*node)->prev) {
-        (*node)->prev->next = NULL;
-    } else if((*node)->next) {
-        (*node)->next->prev = NULL;
-    }
+    struct s_node * prev = (*node)->prev;
+    struct s_node * next = (*node)->next;
+    
     free(*node);
     *node = NULL;
+    node = NULL;
+    if(prev && next) {
+        prev->next = next;
+        next->prev = prev;
+    } else if(prev) {
+        prev->next = NULL;
+    } else if(next) {
+        next->prev = NULL;
+    }
 
     return elem;
 }

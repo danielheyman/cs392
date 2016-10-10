@@ -3,7 +3,7 @@
 */
 #include "list.h"
 
-void print_int(struct s_node* node) {
+void print_string(struct s_node* node) {
     char** pnt;
     
     if(node == NULL || node->elem == NULL) my_str("NULL");

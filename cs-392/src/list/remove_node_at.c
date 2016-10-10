@@ -7,8 +7,7 @@
 
 void* remove_node_at(struct s_node** head, int n) {
     if(head == NULL || *head == NULL) return NULL;
-    
-    struct s_node *loc = *head;
-    while(n-- > 0 || loc->next != NULL) loc = loc->next;
-    return remove_node(&loc);
+
+    while(n-- > 0 && (*head)->next != NULL) head = &((*head)->next);
+    return remove_node(head);
  }

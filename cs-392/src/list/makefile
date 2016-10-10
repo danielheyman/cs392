@@ -16,6 +16,6 @@ fclean: clean
 	rm -f $(LIB)/liblist.a
 re: fclean all
 testlist:
-	$(COMPLILER) $(TEST)/testlist.c -o $(TEST)/testlist $(FLAGS) -I$(INCLUDE) -L$(LIB) -llist
+	$(COMPLILER) $(TEST)/testlist.c -o $(TEST)/testlist $(FLAGS) -I$(INCLUDE) -L$(LIB) -llist -lmy
 	$(TEST)/testlist
 	#valgrind --tool=memcheck --leak-check=yes --show-reachable=yes --num-callers=20 --track-fds=yes $(TEST)/testlist
