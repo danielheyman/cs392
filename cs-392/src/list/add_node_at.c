@@ -12,9 +12,11 @@ void add_node_at(struct s_node* node, struct s_node** head, int n) {
     if(*head == NULL || n == 0) {
         add_node(node, head);
     } else {
-        struct s_node *loc = *head;
-        while(--n > 0 || loc->next != NULL) loc = loc->next;
-        loc->next = node;
-        node->prev = loc;
+        while(--n > 0 && (*head)->next != NULL) head = &((*head)->next);
+        if((*head)->next != NULL) {
+            (*head)->next->prev = node;
+        }
+        (*head)->next = node;
+        node->prev = (*head);
     }
 }

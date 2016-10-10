@@ -7,13 +7,10 @@
 int count_s_nodes(struct s_node* head){
 	unsigned int num = 0;
 
-    if(head != NULL)
+    while(head != NULL)
     {
-        while(head->next)
-        {
-            head = head->next;
-            num++;
-        }
+        num++;
+        head = head->next;
     }
 
     return num;

@@ -13,6 +13,4 @@ void traverse_string(struct s_node* head){
         my_str(" ");
         head = head->next;
     }
-
-    my_char('\n');
 }
