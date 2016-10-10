@@ -7,9 +7,6 @@ I pledge my honor that I have abided by the Stevens Honor System.
 #include "list.h"
 
 int main(int argc, char **argv) {
-    //char* test;
-    //test = my_strdup("$$$$$$$$$$$$$$$");
-    //free(test);
     int int1 = 1;
     int int2 = 2;
     int int3 = 3;
@@ -94,11 +91,6 @@ int main(int argc, char **argv) {
     my_int(*i);
     my_str("\t = 1\n");
     empty_list(&head);
-    
-    
-    
-    
-    
     
     return 0;
 }
