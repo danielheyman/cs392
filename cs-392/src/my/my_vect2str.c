@@ -2,7 +2,7 @@
 
  /*
  Authors: Carla Noshi & Daniel Heyman
- Takes a xtor (array of string ended by a NULL)
+ Takes a vector (array of string ended by a NULL)
  Allocates a new string and copies each string from the array into new string separated by a single space, until NULL pointer to string is found
  Returns new string 
  */
@@ -48,4 +48,3 @@ char *my_vect2str(char **x){
 	return fullstr;
 
 }
-

@@ -1,14 +1,16 @@
+COMPLILER = gcc-4.8
+FLAGS = -Wall -Werror --pedantic -std=c99 -lmy -llist
 NAME = pipes
-
-SRC = pipes.c
-OBJ = $(SRC:.c=.o)
-
-CFLAGS = -I../../include -Wall -Werror -pedantic
-LDFLAGS =
+OBJ = $(NAME).c
+LIB = ../../lib
+INCLUDE = ../../include
 
 all: $(OBJ)
-	cc -L../../lib $(OBJ) -o $(NAME) -lmy -llist -lmy -Wall -Werror -pedantic
+	$(COMPLILER) $(NAME).c -o $(NAME) $(FLAGS) -I$(INCLUDE) -L$(LIB)
 
 clean:
-	rm -f $(OBJ)
 	rm -f $(NAME)
+	
+fclean: clean
+	
+re: fclean all
