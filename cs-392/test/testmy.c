@@ -14,6 +14,9 @@ int main(int argc, char **argv) {
     char *s4 = my_strdup(s3);
     char s5[] = "0";
     char* test;
+
+    char *memes1[3] = {"hello", "world", NULL};
+
     
     my_str("my_char tests:\n");
     my_char('F');
@@ -259,6 +262,9 @@ int main(int argc, char **argv) {
     my_str("\t = -54\n");
     my_int(my_atoi("abcd"));
     my_str("\t = -0\n");
+
+    my_str(my_vect2str(memes1));
+
     
     
     return 0;

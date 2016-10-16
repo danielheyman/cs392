@@ -1,17 +1,14 @@
-COMPLILER      = gcc-4.8
-FLAGS = -Wall -Werror --pedantic -std=c99
-LIB = ../../lib
-INCLUDE = ../../include
-TEST = ../../test
+NAME = pipes
 
-all:
-	$(COMPLILER) -c *.c $(FLAGS) -I$(INCLUDE)
-	ar -rc libpipes.a *.o
-	ranlib libpipes.a
-	mv libpipes.a $(LIB)
+SRC = pipes.c
+OBJ = $(SRC:.c=.o)
+
+CFLAGS = -I../../include -Wall -Werror -pedantic
+LDFLAGS =
+
+all: $(OBJ)
+	cc -L../../lib $(OBJ) -o $(NAME) -lmy -llist -lmy -Wall -Werror -pedantic
+
 clean:
-	rm -f *.o
-	rm -f *.o
-fclean: clean
-	rm -f $(LIB)/libpipes.a
-re: fclean all
+	rm -f $(OBJ)
+	rm -f $(NAME)
