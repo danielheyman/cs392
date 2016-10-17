@@ -1,10 +1,14 @@
+/* 
+Authors: Daniel Heyman & Carla Noshi
+Implements a piping process.
+*/
 #include "my.h"
 
 int main(int argc, char* argv[])
 {
     char buffer[100];
     int fd[2], fd2[2];
-    pid_t pid;
+    int pid;
     char * input = my_vect2str(&argv[1]);
     pipe(fd);
     
