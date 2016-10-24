@@ -9,6 +9,7 @@ Sources used: https://www.tutorialspoint.com/unix_sockets/socket_server_example.
 #include <strings.h>
 #include <sys/time.h>
 #include <errno.h>
+#include <signal.h>
 #include "my.h"
 
 int sockfd;
