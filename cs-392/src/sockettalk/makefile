@@ -1,15 +1,16 @@
 COMPLILER = gcc-4.8
 FLAGS = -Wall -Werror --pedantic -std=c99 -lmy -llist
 NAME = client
-OBJ = $(NAME).c
+NAME2 = server
 LIB = ../../lib
 INCLUDE = ../../include
 
-all: $(OBJ)
+all:
 	$(COMPLILER) $(NAME).c -o $(NAME) $(FLAGS) -I$(INCLUDE) -L$(LIB)
+	$(COMPLILER) $(NAME2).c -o $(NAME2) $(FLAGS) -I$(INCLUDE) -L$(LIB)
 
 clean:
-	rm -f $(NAME)
+	rm -f $(NAME) $(NAME2)
 	
 fclean: clean
 	
