@@ -13,8 +13,7 @@ Sources used: https://www.tutorialspoint.com/unix_sockets/socket_server_example.
 
 int sockfd;
 
-void closing()
-{
+void closing() {
     close(sockfd);
     exit(0);
 }
@@ -31,6 +30,7 @@ int main(int argc, char* argv[])
     
     signal(SIGINT, closing);
     signal(SIGQUIT, closing);
+    signal(SIGPIPE, SIG_IGN);
     
     if (argc < 2) {
         my_str("Invalid arguments");
@@ -83,7 +83,6 @@ int main(int argc, char* argv[])
         }
         
         activity = select( max_sd + 1 , &readfds , NULL , NULL , NULL);
-        
         if (activity < 0 && errno != EINTR) {
             my_str("Error selecting socket");
             exit(1);
@@ -107,27 +106,27 @@ int main(int argc, char* argv[])
                 }
             }
         }
-        
+
         for(int i = 0; i < max_fds; i++)  {
             sd = newsockfds[i];
             
             if (FD_ISSET(sd , &readfds)) {
-                
-                if ((n = read( sd , buffer, 255)) == 0) {
+                 if ((n = read( sd , buffer, 255)) == 0) {
                     getpeername(sd , (struct sockaddr*) &cli_addr, &clilen);
                     close(sd);
                     newsockfds[i] = 0;
+                    free(usernames[i]);
+                    usernames[i] = NULL;
                 } else {
                     buffer[n] = '\0';
 
                     if(my_strncmp(buffer, "/nick ", 6) == 0) {
                         if(buffer[n - 1] == '\n') buffer[n - 1] = '\0';
+                        free(usernames[i]);
                         usernames[i] = my_strdup(&(buffer[6]));
-                    } else if(my_strncmp(buffer, "/exit ", 6) == 0) {
-                        close(sd);
-                        newsockfds[i] = 0;
                     } else if(my_strncmp(buffer, "/", 1) == 0 && my_strncmp(buffer, "/me", 3) != 0) {
-                        sending = my_strdup("This is an invalid command.");
+                        sending = my_strdup("This is an invalid command.\n");
+                        free(sending);
                         send(sd , sending , my_strlen(sending) , 0 );
                     } else {
                         if(my_strncmp(buffer, "/me ", 4) == 0) {
@@ -139,6 +138,7 @@ int main(int argc, char* argv[])
                         for(int j = 0; j < max_fds; j++)  {
                             if(newsockfds[j] > 0 && i != j)  send(newsockfds[j] , sending , my_strlen(sending) , 0 );
                         }
+                        free(sending);
                     }
                 }
             }
