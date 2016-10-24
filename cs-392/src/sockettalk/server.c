@@ -11,47 +11,15 @@ Sources used: https://www.tutorialspoint.com/unix_sockets/socket_server_example.
 #include <errno.h>
 #include "my.h"
 
-/*void doprocessing (int sock) {
-   int n, pid;
-   char buffer[256];
-   bzero(buffer,256);
-   n = read(sock,buffer,255);
-   char * username;
-   
-   if (n < 0) {
-      my_str("ERROR reading from socket");
-      return -1;
-   }
-   
-   username = my_strdup(buffer);
-   
-   while(1) {
-       n = read(sock,buffer,255);
-       if (n < 0) {
-          my_str("ERROR reading from socket");
-          return -1;
-       }
-       
-       if(my_strncmp(buffer, "/nick ", 6)) {
-           
-       } else if(my_strncmp(buffer, "/exit ", 6)) {
-           
-       } else if(my_strncmp(buffer, "/me ", 4)) {
-           
-       } else {
-           my_str()
-       }
-   }
-	
-}*/
-
 int main(int argc, char* argv[])
 {
     fd_set readfds;
     int port, sockfd, newsockfd, newsockfds[99], max_fds = 99, sd, max_sd, activity, n;
+    char * usernames[99];
     socklen_t clilen;
     struct sockaddr_in serv_addr, cli_addr;
     char buffer[256];
+    char * sending;
     
     if (argc < 2) {
         my_str("Invalid arguments");
@@ -60,12 +28,14 @@ int main(int argc, char* argv[])
     
     for(int i = 0; i < max_fds; i++) newsockfds[i] = 0;
     
-    port = my_atoi(argv[2]);
+    port = my_atoi(argv[1]);
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     
     if (sockfd < 0) {
         my_str("Error opening socket");
         return -1;
+    } else {
+        my_str("Opened socket...\n");
     }
     
     bzero((char *) &serv_addr, sizeof(serv_addr));
@@ -82,7 +52,12 @@ int main(int argc, char* argv[])
     if (listen(sockfd, 5) < 0) {
         my_str("ERROR on listening");
         return -1;
+    } else {
+        my_str("Listening on ");
+        my_str(argv[1]);
+        my_str("...\n");
     }
+    
     clilen = sizeof(cli_addr);
    
     while(1) {
@@ -109,9 +84,17 @@ int main(int argc, char* argv[])
                 return -1;
             }
             
+            n = read(newsockfd, buffer, 255);
+            
+            if (n < 0) {
+               my_str("ERROR reading from socket");
+               return -1;
+            }
+            
             for(int i = 0; i < max_fds; i++)  {
                 if(newsockfds[i] == 0) {
                     newsockfds[i] = newsockfd;
+                    usernames[i] = my_strdup(buffer);
                     break;
                 }
             }
@@ -120,7 +103,7 @@ int main(int argc, char* argv[])
         for(int i = 0; i < max_fds; i++)  {
             sd = newsockfds[i];
             
-            if (FD_ISSET( sd , &readfds))  {
+            if (FD_ISSET(sd , &readfds)) {
                 if ((n = read( sd , buffer, 255)) == 0) {
                     getpeername(sd , (struct sockaddr*) &cli_addr, &clilen);
                     close(sd);
@@ -128,7 +111,24 @@ int main(int argc, char* argv[])
                 } else {
                     buffer[n] = '\0';
                     
-                    //send(sd , buffer , strlen(buffer) , 0 );
+                    if(my_strncmp(buffer, "/nick ", 6)) {
+                        usernames[i] = my_strdup(buffer);
+                    } else if(my_strncmp(buffer, "/exit ", 6)) {
+                        close(sd);
+                        newsockfds[i] = 0;
+                    } else if(my_strncmp(buffer, "/", 1) && !my_strncmp(buffer, "/me", 3)) {
+                        sending = my_strdup("This is an invalid command.");
+                        send(sd , sending , my_strlen(sending) , 0 );
+                    } else {
+                        if(my_strncmp(buffer, "/me ", 4)) {
+                            sending = my_strconcat(usernames[i], my_strconcat(": ", &(buffer[4])));
+                        } else {
+                            sending = my_strconcat(usernames[i], my_strconcat(": ", buffer));
+                        }
+                        for(int j = 0; j < max_fds; j++)  {
+                            if(newsockfds[i] > 0)  send(newsockfds[i] , sending , my_strlen(sending) , 0 );
+                        }
+                    }
                 }
             }
         }
