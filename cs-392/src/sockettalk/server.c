@@ -11,19 +11,30 @@ Sources used: https://www.tutorialspoint.com/unix_sockets/socket_server_example.
 #include <errno.h>
 #include "my.h"
 
+int sockfd;
+
+void closing()
+{
+    close(sockfd);
+    exit(0);
+}
+
 int main(int argc, char* argv[])
 {
     fd_set readfds;
-    int port, sockfd, newsockfd, newsockfds[99], max_fds = 99, sd, max_sd, activity, n;
+    int port, newsockfd, newsockfds[99], max_fds = 99, sd, max_sd, activity, n;
     char * usernames[99];
     socklen_t clilen;
     struct sockaddr_in serv_addr, cli_addr;
     char buffer[256];
     char * sending;
     
+    signal(SIGINT, closing);
+    signal(SIGQUIT, closing);
+    
     if (argc < 2) {
         my_str("Invalid arguments");
-        return -1;
+        exit(1);
     }
     
     for(int i = 0; i < max_fds; i++) newsockfds[i] = 0;
@@ -33,7 +44,7 @@ int main(int argc, char* argv[])
     
     if (sockfd < 0) {
         my_str("Error opening socket");
-        return -1;
+        exit(1);
     } else {
         my_str("Opened socket...\n");
     }
@@ -46,12 +57,12 @@ int main(int argc, char* argv[])
     
     if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
         my_str("ERROR on binding");
-        return -1;
+        exit(1);
     }
    
     if (listen(sockfd, 5) < 0) {
         my_str("ERROR on listening");
-        return -1;
+        exit(1);
     } else {
         my_str("Listening on ");
         my_str(argv[1]);
@@ -75,26 +86,23 @@ int main(int argc, char* argv[])
         
         if (activity < 0 && errno != EINTR) {
             my_str("Error selecting socket");
-            return -1;
+            exit(1);
         }
         
         if (FD_ISSET(sockfd, &readfds)) {
             if ((newsockfd = accept(sockfd, (struct sockaddr *)&cli_addr, &clilen)) < 0) {
                 my_str("Error on selecting socket");
-                return -1;
+                exit(1);
             }
-            
-            n = read(newsockfd, buffer, 255);
             
             if (n < 0) {
                my_str("ERROR reading from socket");
-               return -1;
+               exit(1);
             }
             
             for(int i = 0; i < max_fds; i++)  {
                 if(newsockfds[i] == 0) {
                     newsockfds[i] = newsockfd;
-                    usernames[i] = my_strdup(buffer);
                     break;
                 }
             }
@@ -104,29 +112,32 @@ int main(int argc, char* argv[])
             sd = newsockfds[i];
             
             if (FD_ISSET(sd , &readfds)) {
+                
                 if ((n = read( sd , buffer, 255)) == 0) {
                     getpeername(sd , (struct sockaddr*) &cli_addr, &clilen);
                     close(sd);
                     newsockfds[i] = 0;
                 } else {
                     buffer[n] = '\0';
-                    
-                    if(my_strncmp(buffer, "/nick ", 6)) {
-                        usernames[i] = my_strdup(buffer);
-                    } else if(my_strncmp(buffer, "/exit ", 6)) {
+
+                    if(my_strncmp(buffer, "/nick ", 6) == 0) {
+                        if(buffer[n - 1] == '\n') buffer[n - 1] = '\0';
+                        usernames[i] = my_strdup(&(buffer[6]));
+                    } else if(my_strncmp(buffer, "/exit ", 6) == 0) {
                         close(sd);
                         newsockfds[i] = 0;
-                    } else if(my_strncmp(buffer, "/", 1) && !my_strncmp(buffer, "/me", 3)) {
+                    } else if(my_strncmp(buffer, "/", 1) == 0 && my_strncmp(buffer, "/me", 3) != 0) {
                         sending = my_strdup("This is an invalid command.");
                         send(sd , sending , my_strlen(sending) , 0 );
                     } else {
-                        if(my_strncmp(buffer, "/me ", 4)) {
-                            sending = my_strconcat(usernames[i], my_strconcat(": ", &(buffer[4])));
+                        if(my_strncmp(buffer, "/me ", 4) == 0) {
+                            sending = my_strconcat(usernames[i], my_strconcat(" ", &(buffer[4])));
                         } else {
                             sending = my_strconcat(usernames[i], my_strconcat(": ", buffer));
                         }
+                        my_str(sending);
                         for(int j = 0; j < max_fds; j++)  {
-                            if(newsockfds[i] > 0)  send(newsockfds[i] , sending , my_strlen(sending) , 0 );
+                            if(newsockfds[j] > 0 && i != j)  send(newsockfds[j] , sending , my_strlen(sending) , 0 );
                         }
                     }
                 }
