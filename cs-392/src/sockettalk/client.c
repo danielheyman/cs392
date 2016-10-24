@@ -1,3 +1,8 @@
+/* 
+Authors: Daniel Heyman & Carla Noshi
+Takes two command line arguments: a hostname and a port with which to connect.
+*/
+
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
