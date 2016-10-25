@@ -16,6 +16,7 @@ int main(int argc, char **argv) {
     char* test;
 
     char *memes1[3] = {"hello", "world", NULL};
+    /*char *memes2 = "hello \t\t\n class,\nhow are you?";*/
 
     
     my_str("my_char tests:\n");
@@ -263,7 +264,11 @@ int main(int argc, char **argv) {
     my_int(my_atoi("abcd"));
     my_str("\t = -0\n");
 
+    my_str("\n");
     my_str(my_vect2str(memes1));
+    my_str("\n");
+
+    /*my_str2vect(memes2); */
 
     
     
