@@ -41,9 +41,10 @@ int main(int argc, char* argv[])
         vect = my_str2vect(buffer);
         if(my_strcmp("cd", vect[0]) == 0) {
             if(chdir(vect[1]) < 0) {
-                my_str("Unable to change directory.\n");
+                my_str("Directory does not exist.\n");
             }
         } else if(my_strcmp("exit", vect[0]) == 0) {
+            my_str("Bye :)\n");
             free(vect);
             exit(0);
         } else {
@@ -52,7 +53,7 @@ int main(int argc, char* argv[])
                 exit(0);
             } else if(pid == 0) {
                 if(execvp(vect[0], vect) < 0) {
-                    my_str("Unable to run command.\n");
+                    my_str("Command does not exist.\n");
                     exit(0);
                 }
             } else {
