@@ -1,6 +1,6 @@
 /* 
 Authors: Daniel Heyman & Carla Noshi
-Implements a piping process.
+Takes one command line arguments: a port with which to listen.
 Sources used: https://www.tutorialspoint.com/unix_sockets/socket_server_example.htm, http://www.binarytides.com/multiple-socket-connections-fdset-select-linux/
 */
 #include <stdio.h>
