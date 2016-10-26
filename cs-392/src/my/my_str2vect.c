@@ -1,4 +1,4 @@
-  #include "my.h"
+#include "my.h"
 
 /* 
 Authors: Daniel Heyman & Carla Noshi
@@ -11,44 +11,75 @@ Takes a string
   char** my_str2vect(char* str)
   {
 
-    char** vect;
-    int count;
-    int num;
-    int words;
-    char* newstr;
-
-    if(str != NULL)
+  int len = 0;
+  int strnum = 0;
+  char **fullstr;
+  int index = 0;
+  int index2;
+  int wordindex = 0;
+  int size = 0;
+  int inword = 0;
+  int startindex = -1;
+  int endindex = -1;
+  
+  if(str == NULL && *str == '\0')
+    return NULL;
+  if(*str == '\0')
+  {
+    fullstr = malloc(sizeof(char *) * 0);
+    fullstr[0] = malloc(0);
+    return fullstr;
+  }
+  
+  len = my_strlen(str);
+    
+  for(index = 0; index < len; index++)
+  {
+    if(!(str[index] == ' ' || str[index] == '\t' || str[index] == '\n') && (inword == 0))
     {
-      newstr = my_strdup(str);
-      for(count = 0, num = 0; newstr[count]; count++)
+      strnum++;
+      inword = 1;
+    }
+    else if((str[index] == ' ' || str[index] == '\t' || str[index] == '\n') && (inword == 1))
+      inword = 0;
+  }
+  
+  fullstr = malloc(sizeof(char *) * (strnum + 1));
+  inword = 0;   
+  strnum = 0;
+
+  startindex = -1;
+  endindex = -1;
+  
+  for(index = 0; index < len; index++)
+  {
+    if(!(str[index] == ' ' || str[index] == '\t' || str[index] == '\n') && (inword == 0))
+    {
+      startindex = index;
+      inword = 1;
+    }
+    else if((str[index] == ' ' || str[index] == '\t' || str[index] == '\n') && (inword == 1))
+    {
+      endindex = index;
+      inword = 0;
+    }
+    if((startindex != -1) && (endindex != -1))
+    {
+      size = (endindex - startindex);
+      fullstr[strnum] = malloc(size);
+      wordindex = 0;
+      for(index2 = startindex; index2 < endindex; index2++)
       {
-        if(newstr[count - 1] != ' ' && newstr[count - 1] != '\t'
-           && (newstr[count] == ' ' || newstr[count] == '\t'))
-        {
-          newstr[count] = '\0';
-          num++;
-        }
-        else if(count == 0 && newstr[count] != ' ' && newstr[count] != '\t')
-          num++;
+        fullstr[strnum][wordindex] = str[index2];
+        wordindex++;
       }
-      vect = (char**) malloc((num + 1) * sizeof(char*));
-      
-      for(words = num - 1, count = 0, num = 0; num <= words; )
-      {
-        if(newstr[count] == ' ' || newstr[count] == '\t')
-          for( ; newstr[count] == ' ' || newstr[count] == '\t'; count++){
-        vect[num++] = my_strdup(newstr + count);
-        count += (my_strlen(newstr + count) + 1);
-      }
-      vect[num] = NULL;
-      free(newstr);
+      strnum++;
+      startindex = -1;
+      endindex = -1;
     }
   }
-
-  else{
-    vect = NULL;
-  }
-
-
-  return vect;
+  
+  fullstr[strnum] = NULL;
+  
+  return fullstr;
 }
