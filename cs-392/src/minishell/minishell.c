@@ -36,9 +36,8 @@ int main(int argc, char* argv[])
         i = 0;
         while(buffer[i] != '\n' && buffer[i] != '\0') i++;
         buffer[i] = '\0';
-        
-        
         vect = my_str2vect(buffer);
+        
         if(my_strcmp("cd", vect[0]) == 0) {
             if(chdir(vect[1]) < 0) {
                 my_str("Directory does not exist.\n");
