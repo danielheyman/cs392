@@ -46,6 +46,9 @@ int main(int argc, char* argv[])
             my_str("Bye :)\n");
             free(vect);
             exit(0);
+        } else if(my_strcmp("help", vect[0]) == 0) {
+            my_str("Built in commands:\ncd [directory]: Changes the current working directory to directory.\n");
+            my_str("exit: Exits the minishell.\nhelp: Prints a help message listing the built in commands.\n");
         } else {
             if((pid = fork()) < 0) {
                 my_str("Unable to fork.\n");
