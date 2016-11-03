@@ -8,7 +8,7 @@ Implements a piping process.
 #include <stdlib.h> 
 #include <unistd.h> 
 #include <string.h>
-#include <ncurses.h>
+#include <curses.h>
 
 int current, count, width, height, columnCount;
 bool * selected;
