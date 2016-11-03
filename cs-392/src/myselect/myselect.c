@@ -8,7 +8,6 @@ Implements a piping process.
 #include <stdlib.h> 
 #include <unistd.h> 
 #include <string.h>
-#include <term.h> 
 #include <ncurses.h>
 
 int current, count, width, height, columnCount;
@@ -17,10 +16,10 @@ char** files;
 int * fileSizes;
 
 void draw() {
-  setupterm("vt100", fileno(stdout), (int *)0);
-  width = tigetnum("cols");
-  height = tigetnum("lines");
-  setupterm(NULL, fileno(stdout), (int *)0);
+  endwin();
+  erase();
+  refresh();
+  getmaxyx(stdscr,height,width);
 
   columnCount = (count + height + 1) / height;
   int * maxPerCol = malloc(sizeof(int) * columnCount);
@@ -31,8 +30,6 @@ void draw() {
   int totalWidth = 0;
   for(int i = 0; i < columnCount; ++i) totalWidth += maxPerCol[i];
   
-  erase();
-  resizeterm(height, width);
   curs_set(0);
   if(totalWidth >= width) {
     printw("resize window!");
