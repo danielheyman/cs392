@@ -9,6 +9,7 @@ Implements a piping process.
 #include <unistd.h> 
 #include <string.h>
 #include <curses.h>
+#include <signal.h>
 
 int current, count, width, height, columnCount;
 bool * selected;
