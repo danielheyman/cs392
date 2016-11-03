@@ -1,5 +1,5 @@
 COMPLILER = gcc-4.8
-FLAGS = -Wall -Werror --pedantic -std=c99 -lmy -llist -lncurses
+FLAGS = -Wall -Werror --pedantic -std=c99 -lmy -llist -lcurses
 NAME = myselect
 LIB = ../../lib
 INCLUDE = ../../include
