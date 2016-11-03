@@ -2,7 +2,6 @@
 Authors: Daniel Heyman & Carla Noshi
 Implements a piping process.
 */
-#include "my.h"
 #include <stdio.h> 
 #include <stdlib.h> 
 #include <unistd.h> 
@@ -61,7 +60,7 @@ void draw() {
 int main(int argc, char* argv[])
 {
   if (argc < 2) {
-      my_str("Invalid arguments");
+      printf("Invalid arguments");
       exit(0);
   }
   
