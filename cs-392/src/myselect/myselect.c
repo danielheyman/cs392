@@ -1,6 +1,5 @@
 /* 
 Authors: Daniel Heyman & Carla Noshi
-Implements a piping process.
 */
 #include <stdio.h> 
 #include <stdlib.h> 
