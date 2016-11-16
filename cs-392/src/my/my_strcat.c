@@ -11,12 +11,12 @@ char *my_strcat(char *dst, char *src) {
     if(dst == NULL || src == NULL) {
         return dst;
     }
-    while(*dst != '\0') dst++;
+    int i = 0;
+    while(dst[i] != '\0') i++;
     while(*src != '\0') {
-        *dst = *src;
-        dst++;
+        dst[i++] = *src;
         src++;
     }
-    *dst = '\0';
+    dst[i] = '\0';
     return dst;
 }

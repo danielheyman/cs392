@@ -13,7 +13,7 @@ void my_int(int i) {
     }
     
     copy2 = unsigned_copy;
-    while(copy2 > 10) {
+    while(copy2 >= 10) {
         copy2 /= 10;
         divisor *= 10;
     }

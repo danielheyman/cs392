@@ -5,6 +5,7 @@ I pledge my honor that I have abided by the Stevens Honor System.
 
 */ 
 #include "my.h"
+#include <stdio.h>
 
 int main(int argc, char **argv) {
     char s[] = "hello";
@@ -15,7 +16,7 @@ int main(int argc, char **argv) {
     char s5[] = "0";
     char* test;
 
-    char *memes1[3] = {"hello", "world", NULL};
+    //char *memes1[3] = {"hello", "world", NULL};
     /*char *memes2 = "hello \t\t\n class,\nhow are you?";*/
 
     
@@ -126,6 +127,8 @@ int main(int argc, char **argv) {
     my_str("\t\t = nothing\n");
 
     my_str("\nmy_strcmp tests:\n");
+    my_int(my_strcmp("abc", "abcd"));
+    my_str("\t\t = -1\n");
     my_int(my_strcmp("aaa", "bbb"));
     my_str("\t\t = -1\n");
     my_int(my_strcmp("aaa", "aaa"));
@@ -144,6 +147,8 @@ int main(int argc, char **argv) {
     my_str("\t\t = 4\n");
 
     my_str("\nmy_strncmp tests:\n");
+    my_int(my_strncmp("", NULL, 0));
+    my_str("\t\t = 1\n");
     my_int(my_strncmp("water", "weather", 2));
     my_str("\t\t = -4\n");
     my_int(my_strncmp("wet", "weather", 2));
@@ -263,12 +268,6 @@ int main(int argc, char **argv) {
     my_str("\t = -54\n");
     my_int(my_atoi("abcd"));
     my_str("\t = -0\n");
-
-    my_str("\n");
-    my_str(my_vect2str(memes1));
-    my_str("\n");
-
-    /*my_str2vect(memes2); */
 
     
     

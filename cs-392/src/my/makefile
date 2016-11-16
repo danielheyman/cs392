@@ -1,4 +1,4 @@
-COMPLILER      = gcc-4.8
+COMPLILER      = gcc
 FLAGS = -Wall -Werror --pedantic -std=c99
 LIB = ../../lib
 INCLUDE = ../../include

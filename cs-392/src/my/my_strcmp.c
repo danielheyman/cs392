@@ -25,5 +25,5 @@ int my_strcmp(char* a, char* b){
 	
 	for( ; *a && *b && (*a == *b); a++, b++);
 	
-	return *a - *b;
+	return (int)(*a) - (int)(*b);
 }
