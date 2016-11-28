@@ -1,5 +1,5 @@
 COMPLILER = gcc
-FLAGS = -Wall -Werror --pedantic -std=c99 -lmy -llist
+FLAGS = -Wall -Werror --pedantic -std=c99 -lmy -llist -D_POSIX_SOURCE
 NAME = minishell
 LIB = ../../lib
 INCLUDE = ../../include

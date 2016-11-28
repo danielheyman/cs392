@@ -5,6 +5,7 @@ Implements minishell
 #include <stdio.h>
 #include <unistd.h>
 #include <signal.h>
+#include <limits.h>
 #include <sys/wait.h>
 #include "my.h"
 
@@ -22,7 +23,7 @@ int main(int argc, char* argv[])
     signal(SIGINT, stopFork);
         
     while(1) {
-        getcwd(cwd, PATH_MAX);
+        getcwd(cwd, 512);
         my_str("MINISHELL: ");
         my_str(cwd);
         my_str(" $: ");
