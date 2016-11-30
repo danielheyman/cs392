@@ -183,7 +183,7 @@ int main(int argc, char* argv[])
             //continue;
             
             if(key == 10) break; // enter
-            else if(key == 127 || key == 8) bufferBackspace(&buffer);
+            else if(key == 127 || key == 8 || key == KEY_BACKSPACE) bufferBackspace(&buffer);
             else if(key == KEY_UP) continue;
             else if(key == KEY_DOWN) continue;
             else if(key == KEY_LEFT) bufferLeft(&buffer);
