@@ -11,6 +11,17 @@ Implements minishell
 #include <string.h>
 #include "my.h"
 
+/*
+    TODO
+    Up and Down Arrow Keys: Should swap between previous and the current command. For this feature you will most likely need to use your linked list
+    
+    CTRL + "W": Cut a word into the clipboard. You should be abe to cut multiple words. (Try using it in bash!)
+    CTRL + "U": Cut a line into the clipboard. It should be able to work with the above commend. (Once again, try using it in bash!)
+    
+    Saved History: When you exit, save your command history to a file called .nsmshistory and load the command history when you start - save to home directory
+    Dollar Sign: Program the ability to use the $() to pass output from one program into another (i.e. more $(myselect *.c))
+*/
+
 struct Buffers {
     int length, maxLength, cursorInitialY, cursorInitialX, currentPosition;
     char content[2500], clipboard[2500];
