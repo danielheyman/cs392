@@ -47,6 +47,11 @@ int main(int argc, char **argv) {
     remove_node(&test);
     remove_node(&head);
     
+    
+    head = new_node(NULL, NULL, NULL);
+    add_node(test, &head);
+    
+    
     my_str("\nadd_node, append, add_node_at, traverse_int, debug_int, traverse_char, debug_char, traverse_string, debug_string, remove_last, empty_list tests:\n");
     head = new_node(&int1, NULL, NULL);
     test = new_node(&int2, NULL, NULL);

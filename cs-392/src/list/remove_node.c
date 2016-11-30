@@ -14,15 +14,17 @@ void* remove_node(struct s_node** node){
     struct s_node * prev = (*node)->prev;
     struct s_node * next = (*node)->next;
     
-    free(*node);
+    //free(*node);
     *node = NULL;
-    node = NULL;
     if(prev && next) {
+        *node = next;
         prev->next = next;
         next->prev = prev;
     } else if(prev) {
+        *node = prev;
         prev->next = NULL;
     } else if(next) {
+        *node = next;
         next->prev = NULL;
     }
 

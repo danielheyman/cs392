@@ -17,7 +17,8 @@ void add_node_at(struct s_node* node, struct s_node** head, int n) {
         if((*head)->next != NULL) {
             (*head)->next->prev = node;
         }
-        (*head)->next = node;
+        node->next = (*head)->next;
         node->prev = (*head);
+        (*head)->next = node;
     }
 }

@@ -19,3 +19,7 @@ testlist:
 	$(COMPLILER) $(TEST)/testlist.c -o $(TEST)/testlist $(FLAGS) -I$(INCLUDE) -L$(LIB) -llist -lmy
 	$(TEST)/testlist
 	#valgrind --tool=memcheck --leak-check=yes --show-reachable=yes --num-callers=20 --track-fds=yes $(TEST)/testlist
+testlistTA:
+	$(COMPLILER) $(TEST)/testlistTA.c -o $(TEST)/testlistTA $(FLAGS) -I$(INCLUDE) -L$(LIB) -llist -lmy
+	$(TEST)/testlistTA
+	#valgrind --tool=memcheck --leak-check=yes --show-reachable=yes --num-callers=20 --track-fds=yes $(TEST)/testlist
