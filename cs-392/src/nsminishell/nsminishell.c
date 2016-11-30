@@ -78,7 +78,11 @@ struct Buffers buffer;
 int pid;
 
 void stopFork() {
-    kill(pid, SIGINT);
+    if(pid) kill(pid, SIGINT);
+}
+
+void ctrly() {
+    
 }
 
 void clearScreen() {
@@ -93,6 +97,7 @@ int main(int argc, char* argv[])
     int i, key;
     
     signal(SIGINT, stopFork);
+    signal(SIGTSTP, ctrly);
     
     initscr();
     clearScreen();
@@ -124,7 +129,7 @@ int main(int argc, char* argv[])
             else if(key == 5) continue; // ctrl+e
             else if(key == 23) continue; // ctrl+w
             else if(key == 21) continue; // ctrl+u
-            else if(key == 5) continue; // ctrl+y
+            else if(key == 25) continue; // ctrl+y
             else bufferAddChar(&buffer, key);
         }
         
@@ -170,6 +175,7 @@ int main(int argc, char* argv[])
                 while ((i = read(pipefd[0], buffer, sizeof(buffer))) != 0){
                     buffer[i] = '\0';
                     printw(buffer);
+                    refresh();
                 }
             }
         }
