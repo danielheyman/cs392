@@ -13,7 +13,7 @@ Implements minishell
 
 struct Buffers {
     int length, maxLength, cursorInitialY, cursorInitialX, currentPosition;
-    char content[255];
+    char content[2500], clipboard[2500];
 };
 
 void moveCursor(struct Buffers * buffer, int currentPosition) {
@@ -36,6 +36,7 @@ void resetBuffer(struct Buffers * buffer) {
     buffer->length = 0;
     buffer->maxLength = 0;
     buffer->currentPosition = 0;
+    buffer->clipboard[0] = '\0';
     getyx(stdscr, buffer->cursorInitialY, buffer->cursorInitialX);
 }
 
@@ -74,43 +75,83 @@ void bufferAddChar(struct Buffers * buffer, char key) {
     moveCursor(buffer, buffer->currentPosition);
 }
 
-struct Buffers buffer;
+void bufferMoveStart(struct Buffers * buffer) {
+    moveCursor(buffer, 0);
+}
+
+void bufferMoveEnd(struct Buffers * buffer) {
+    moveCursor(buffer, buffer->length);
+}
+
+void bufferCutCommand(struct Buffers * buffer) {
+    my_strncpy(buffer->clipboard, buffer->content, buffer->length);
+    buffer->currentPosition = 0;
+    buffer->content[0] = '\0';
+    for(int i = 0; i < buffer->length; i++) {
+        moveCursor(buffer, i);
+        addch(' ');
+    }
+    moveCursor(buffer, 0);
+    buffer->length = 0;
+    refresh();
+}
+
+void bufferPasteCommand(struct Buffers * buffer) {
+    for(int i = 0; buffer->clipboard[i] != '\0'; ++i) {
+        bufferAddChar(buffer, buffer->clipboard[i]);
+    }
+}
+
 int pid;
+struct Buffers buffer;
 
 void stopFork() {
     if(pid) kill(pid, SIGINT);
 }
 
 void ctrly() {
-    
+    bufferPasteCommand(&buffer);
 }
 
-void clearScreen() {
+void printDirectory() {
+    char cwd[255];
+    refresh();
+    getcwd(cwd, 512);
+    printw("MINISHELL: ");
+    printw("%s", cwd);
+    printw(" $: ");
+}
+
+void clearScreen(struct Buffers * buffer) {
     endwin();
     erase();
     refresh();
+    
+    if(buffer) {
+        printDirectory();
+        getyx(stdscr, buffer->cursorInitialY, buffer->cursorInitialX);
+        moveCursor(buffer, 0);
+        printw(buffer->content);
+        moveCursor(buffer, buffer->currentPosition);
+    }
 }
 
 int main(int argc, char* argv[])
 {
-    char cwd[255], ** vect;
+    char ** vect;
     int i, key;
     
     signal(SIGINT, stopFork);
     signal(SIGTSTP, ctrly);
     
     initscr();
-    clearScreen();
+    clearScreen(NULL);
     scrollok(stdscr,TRUE);
     keypad(stdscr, TRUE);
     noecho();
         
     while(1) {
-        refresh();
-        getcwd(cwd, 512);
-        printw("MINISHELL: ");
-        printw("%s", cwd);
-        printw(" $: ");
+        printDirectory();
         
         resetBuffer(&buffer);
         while(1) {
@@ -124,12 +165,12 @@ int main(int argc, char* argv[])
             else if(key == KEY_DOWN) continue;
             else if(key == KEY_LEFT) bufferLeft(&buffer);
             else if(key == KEY_RIGHT) bufferRight(&buffer);
-            else if(key == 12) continue; // ctrl+l
-            else if(key == 1) continue; // ctrl+a
-            else if(key == 5) continue; // ctrl+e
+            else if(key == 12) clearScreen(&buffer); // ctrl+l
+            else if(key == 1) bufferMoveStart(&buffer); // ctrl+a
+            else if(key == 5) bufferMoveEnd(&buffer); // ctrl+e
             else if(key == 23) continue; // ctrl+w
-            else if(key == 21) continue; // ctrl+u
-            else if(key == 25) continue; // ctrl+y
+            else if(key == 21) bufferCutCommand(&buffer); // ctrl+u
+            else if(key == 25) bufferPasteCommand(&buffer); // ctrl+y
             else bufferAddChar(&buffer, key);
         }
         
