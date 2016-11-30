@@ -117,9 +117,17 @@ void printDirectory() {
     char cwd[255];
     refresh();
     getcwd(cwd, 512);
+    init_pair(1, COLOR_RED, COLOR_BLACK);
+    init_pair(2, COLOR_BLUE, COLOR_BLACK);
+    attron(COLOR_PAIR(1)); 
     printw("MINISHELL: ");
+    attroff(COLOR_PAIR(1)); 
+    attron(COLOR_PAIR(2)); 
     printw("%s", cwd);
+    attroff(COLOR_PAIR(2)); 
+    attron(COLOR_PAIR(1)); 
     printw(" $: ");
+    attroff(COLOR_PAIR(1)); 
 }
 
 void clearScreen(struct Buffers * buffer) {
@@ -145,6 +153,10 @@ int main(int argc, char* argv[])
     signal(SIGTSTP, ctrly);
     
     initscr();
+    start_color();
+    init_color(COLOR_RED, 900, 100, 100);
+    init_color(COLOR_BLUE, 100, 100, 900);
+    init_color(COLOR_BLACK, 74, 152, 219);
     clearScreen(NULL);
     scrollok(stdscr,TRUE);
     keypad(stdscr, TRUE);
