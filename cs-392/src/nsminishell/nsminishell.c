@@ -19,7 +19,6 @@ Implements minishell
     CTRL + "W": Cut a word into the clipboard. You should be abe to cut multiple words. (Try using it in bash!)
     CTRL + "U": Cut a line into the clipboard. It should be able to work with the above commend. (Once again, try using it in bash!)
     
-    Saved History: load the command history when you start - save to home directory
     Dollar Sign: Program the ability to use the $() to pass output from one program into another (i.e. more $(myselect *.c))
 */
 

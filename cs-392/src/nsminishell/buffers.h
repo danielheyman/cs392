@@ -7,25 +7,39 @@
 
 struct Buffers {
     int length, maxLength, cursorInitialY, cursorInitialX, currentPosition, currentHistoryPosition;
-    char * content, clipboard[2500], * originalHistory;
+    char * content, clipboard[1000], * originalHistory, * dir;
     struct s_node * history;
 };
 
+char * bufferHistoryFile(struct Buffers * buffer) {
+    if(buffer->dir == NULL) {
+        struct passwd *pw = getpwuid(getuid());
+        buffer->dir = pw->pw_dir;
+        my_strcat(buffer->dir, my_strdup("/.nsmshistory"));
+    }
+    return buffer->dir;
+}
+
 void bufferSaveHistory(struct Buffers * buffer) {
-    struct passwd *pw = getpwuid(getuid());
-    char *dir = pw->pw_dir;
-    my_strcat(dir, my_strdup("/.nsmshistory"));
-    printf("%s", dir);
     FILE *fp;
-    fp = fopen(dir,"w");
-    for(int i = 1; i < count_s_nodes(buffer->history); i++) {
+    fp = fopen(bufferHistoryFile(buffer),"w");
+    for(int i = 1; i < count_s_nodes(buffer->history) && i < 50; i++) {
         fprintf(fp,"%s\n", elem_at(buffer->history, i));
     }
     fclose(fp);
 }
 
 void bufferLoadHistory(struct Buffers * buffer) {
-    
+    FILE* fp = fopen(bufferHistoryFile(buffer), "r");
+    if (fp == NULL) fclose(fp);
+    char line[1000];
+
+    while (fgets(line, sizeof(line), fp)) {
+        if(line[0] == '\n') continue;
+        strtok(line, "\n");
+        append(new_node(my_strdup(line), NULL, NULL), &buffer->history);
+    }
+    fclose(fp);
 }
 
 void bufferMoveCursor(struct Buffers * buffer, int currentPosition) {
