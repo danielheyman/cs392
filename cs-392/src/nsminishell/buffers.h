@@ -24,7 +24,7 @@ void bufferSaveHistory(struct Buffers * buffer) {
     FILE *fp;
     fp = fopen(bufferHistoryFile(buffer),"w");
     for(int i = 1; i < count_s_nodes(buffer->history) && i < 50; i++) {
-        fprintf(fp,"%s\n", elem_at(buffer->history, i));
+        fprintf(fp,"%s\n", (char *) elem_at(buffer->history, i));
     }
     fclose(fp);
 }
