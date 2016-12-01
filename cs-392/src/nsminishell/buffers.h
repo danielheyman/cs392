@@ -31,7 +31,7 @@ void bufferSaveHistory(struct Buffers * buffer) {
 
 void bufferLoadHistory(struct Buffers * buffer) {
     FILE* fp = fopen(bufferHistoryFile(buffer), "r");
-    if (fp == NULL) fclose(fp);
+    if (fp == NULL) return;
     char line[1000];
 
     while (fgets(line, sizeof(line), fp)) {
