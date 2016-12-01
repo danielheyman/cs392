@@ -8,6 +8,7 @@
 struct Buffers {
     int length, maxLength, cursorInitialY, cursorInitialX, currentPosition, currentHistoryPosition;
     char * content, clipboard[1000], * originalHistory, * dir;
+    bool clipboardReset;
     struct s_node * history;
 };
 
@@ -129,17 +130,22 @@ void bufferMoveEnd(struct Buffers * buffer) {
     bufferMoveCursor(buffer, buffer->length);
 }
 
+void bufferCutWord(struct Buffers * buffer) {
+    if(buffer->currentPosition == 0) return;
+    
+    if(buffer->clipboardReset) buffer->clipboard[0] = '\0';
+    
+    do {
+        for(int i = my_strlen(buffer->clipboard); i >= 0; --i) buffer->clipboard[i + 1] = buffer->clipboard[i];
+        buffer->clipboard[0] = buffer->content[buffer->currentPosition - 1];
+        bufferBackspace(buffer);
+    } while(buffer->currentPosition != 0 && buffer->content[buffer->currentPosition - 1] != ' ');
+    
+    buffer->clipboardReset = false;
+}
+
 void bufferCutCommand(struct Buffers * buffer) {
-    my_strncpy(buffer->clipboard, buffer->content, buffer->length);
-    buffer->currentPosition = 0;
-    buffer->content[0] = '\0';
-    for(int i = 0; i < buffer->length; i++) {
-        bufferMoveCursor(buffer, i);
-        addch(' ');
-    }
-    bufferMoveCursor(buffer, 0);
-    buffer->length = 0;
-    refresh();
+    while(buffer->currentPosition != 0) bufferCutWord(buffer);
 }
 
 void bufferPasteCommand(struct Buffers * buffer) {

@@ -32,6 +32,7 @@ void stopFork() {
 
 void ctrly() {
     bufferPasteCommand(&buffer);
+    buffer.clipboardReset = true;
 }
 
 void end() {
@@ -77,10 +78,12 @@ int main(int argc, char* argv[])
             else if(key == 12) bufferClearScreen(&buffer); // ctrl+l
             else if(key == 1) bufferMoveStart(&buffer); // ctrl+a
             else if(key == 5) bufferMoveEnd(&buffer); // ctrl+e
-            else if(key == 23) continue; // ctrl+w
+            else if(key == 23) bufferCutWord(&buffer); // ctrl+w
             else if(key == 21) bufferCutCommand(&buffer); // ctrl+u
             else if(key == 25) bufferPasteCommand(&buffer); // ctrl+y
             else bufferAddChar(&buffer, key);
+            
+            if(key != 23) buffer.clipboardReset = true;
         }
         
         bufferMoveCursor(&buffer, buffer.length);
