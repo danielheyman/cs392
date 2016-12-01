@@ -20,7 +20,16 @@ char * bufferHistoryFile(struct Buffers * buffer) {
     return buffer->dir;
 }
 
+void bufferResetOriginalHistory(struct Buffers * buffer) {
+    if(buffer->currentHistoryPosition == 0) return;
+    remove_node_at(&buffer->history, buffer->currentHistoryPosition);
+    add_node_at(new_node(my_strdup(buffer->originalHistory), NULL, NULL), &buffer->history, buffer->currentHistoryPosition);
+    buffer->originalHistory = my_strdup("");
+    buffer->content = elem_at(buffer->history, buffer->currentHistoryPosition);
+}
+
 void bufferSaveHistory(struct Buffers * buffer) {
+    if(buffer->currentHistoryPosition != 0) bufferResetOriginalHistory(buffer);
     FILE *fp;
     fp = fopen(bufferHistoryFile(buffer),"w");
     for(int i = 1; i < count_s_nodes(buffer->history) && i < 50; i++) {
@@ -56,14 +65,6 @@ void bufferMoveCursor(struct Buffers * buffer, int currentPosition) {
     x %= screenx;
     move(y, x);
     refresh();
-}
-
-void bufferResetOriginalHistory(struct Buffers * buffer) {
-    if(buffer->currentHistoryPosition == 0) return;
-    remove_node_at(&buffer->history, buffer->currentHistoryPosition);
-    add_node_at(new_node(my_strdup(buffer->originalHistory), NULL, NULL), &buffer->history, buffer->currentHistoryPosition);
-    buffer->originalHistory = my_strdup("");
-    buffer->content = elem_at(buffer->history, buffer->currentHistoryPosition);
 }
 
 void bufferReset(struct Buffers * buffer) {
