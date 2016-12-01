@@ -9,22 +9,23 @@ Implements minishell
 #include <sys/wait.h>
 #include <curses.h>
 #include <string.h>
+#include <pwd.h>
 #include "my.h"
+#include "list.h"
 #include "buffers.h"
 
 /*
     TODO
-    Up and Down Arrow Keys: Should swap between previous and the current command. For this feature you will most likely need to use your linked list
-    
     CTRL + "W": Cut a word into the clipboard. You should be abe to cut multiple words. (Try using it in bash!)
     CTRL + "U": Cut a line into the clipboard. It should be able to work with the above commend. (Once again, try using it in bash!)
     
-    Saved History: When you exit, save your command history to a file called .nsmshistory and load the command history when you start - save to home directory
+    Saved History: load the command history when you start - save to home directory
     Dollar Sign: Program the ability to use the $() to pass output from one program into another (i.e. more $(myselect *.c))
 */
 
 int pid;
 struct Buffers buffer;
+char ** vect;
 
 void stopFork() {
     if(pid) kill(pid, SIGINT);
@@ -34,9 +35,16 @@ void ctrly() {
     bufferPasteCommand(&buffer);
 }
 
+void end() {
+    refresh();
+    free(vect);
+    endwin();
+    bufferSaveHistory(&buffer);
+    exit(0);
+}
+
 int main(int argc, char* argv[])
 {
-    char ** vect;
     int i, key;
     
     signal(SIGINT, stopFork);
@@ -63,8 +71,8 @@ int main(int argc, char* argv[])
             
             if(key == 10) break; // enter
             else if(key == 127 || key == 8 || key == KEY_BACKSPACE) bufferBackspace(&buffer);
-            else if(key == KEY_UP) continue;
-            else if(key == KEY_DOWN) continue;
+            else if(key == KEY_UP) bufferHistoryUp(&buffer);
+            else if(key == KEY_DOWN) bufferHistoryDown(&buffer);
             else if(key == KEY_LEFT) bufferLeft(&buffer);
             else if(key == KEY_RIGHT) bufferRight(&buffer);
             else if(key == 12) bufferClearScreen(&buffer); // ctrl+l
@@ -87,10 +95,7 @@ int main(int argc, char* argv[])
             }
         } else if(my_strcmp("exit", vect[0]) == 0) {
             printw("Bye :)\n");
-            refresh();
-            free(vect);
-            endwin();
-            exit(0);
+            end();
         } else if(my_strcmp("help", vect[0]) == 0) {
             printw("Built in commands:\ncd [directory]: Changes the current working directory to directory.\n");
             printw("exit: Exits the minishell.\nhelp: Prints a help message listing the built in commands.\n");
@@ -100,8 +105,7 @@ int main(int argc, char* argv[])
             
             if((pid = fork()) < 0) {
                 printw("Unable to fork.\n");
-                refresh();
-                exit(0);
+                end();
             } else if(pid == 0) {
                 close(pipefd[0]);
                 dup2(pipefd[1], 1);

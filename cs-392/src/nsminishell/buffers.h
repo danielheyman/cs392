@@ -6,9 +6,27 @@
 #endif
 
 struct Buffers {
-    int length, maxLength, cursorInitialY, cursorInitialX, currentPosition;
-    char content[2500], clipboard[2500];
+    int length, maxLength, cursorInitialY, cursorInitialX, currentPosition, currentHistoryPosition;
+    char * content, clipboard[2500], * originalHistory;
+    struct s_node * history;
 };
+
+void bufferSaveHistory(struct Buffers * buffer) {
+    struct passwd *pw = getpwuid(getuid());
+    char *dir = pw->pw_dir;
+    my_strcat(dir, my_strdup("/.nsmshistory"));
+    printf("%s", dir);
+    FILE *fp;
+    fp = fopen(dir,"w");
+    for(int i = 1; i < count_s_nodes(buffer->history); i++) {
+        fprintf(fp,"%s\n", elem_at(buffer->history, i));
+    }
+    fclose(fp);
+}
+
+void bufferLoadHistory(struct Buffers * buffer) {
+    
+}
 
 void bufferMoveCursor(struct Buffers * buffer, int currentPosition) {
     int screenx, screeny, lines, x, y;
@@ -26,10 +44,29 @@ void bufferMoveCursor(struct Buffers * buffer, int currentPosition) {
     refresh();
 }
 
+void bufferResetOriginalHistory(struct Buffers * buffer) {
+    if(buffer->currentHistoryPosition == 0) return;
+    remove_node_at(&buffer->history, buffer->currentHistoryPosition);
+    add_node_at(new_node(my_strdup(buffer->originalHistory), NULL, NULL), &buffer->history, buffer->currentHistoryPosition);
+    buffer->originalHistory = my_strdup("");
+    buffer->content = elem_at(buffer->history, buffer->currentHistoryPosition);
+}
+
 void bufferReset(struct Buffers * buffer) {
+    if(buffer->history == NULL) {
+        add_node_at(new_node(my_strdup(""), NULL, NULL), &buffer->history, 1);
+        bufferLoadHistory(buffer);
+    }
+    if(buffer->length != 0) {
+        add_node_at(new_node(my_strdup(buffer->content), NULL, NULL), &buffer->history, 1);
+        if(buffer->currentHistoryPosition++ != 0) bufferResetOriginalHistory(buffer);
+    }
+    buffer->content = elem_at(buffer->history, 0);
+    buffer->content[0] = '\0';
     buffer->length = 0;
     buffer->maxLength = 0;
     buffer->currentPosition = 0;
+    buffer->currentHistoryPosition = 0;
     buffer->clipboard[0] = '\0';
     getyx(stdscr, buffer->cursorInitialY, buffer->cursorInitialX);
 }
@@ -94,6 +131,34 @@ void bufferPasteCommand(struct Buffers * buffer) {
     for(int i = 0; buffer->clipboard[i] != '\0'; ++i) {
         bufferAddChar(buffer, buffer->clipboard[i]);
     }
+}
+
+void bufferChangeCommand(struct Buffers * buffer, char * contentPointer) {
+    for(int i = my_strlen(contentPointer); i < buffer->length; i++) {
+        bufferMoveCursor(buffer, i);
+        addch(' ');
+    }
+    
+    buffer->length = my_strlen(contentPointer);
+    buffer->currentPosition = buffer->length;
+    buffer->content = contentPointer;
+    if(buffer->length > buffer->maxLength) buffer->maxLength = buffer->length;
+    bufferMoveCursor(buffer, 0);
+    printw(buffer->content);
+}
+
+void bufferHistoryUp(struct Buffers * buffer) {
+    if(buffer->currentHistoryPosition == count_s_nodes(buffer->history) - 1) return;
+    bufferResetOriginalHistory(buffer);
+    buffer->originalHistory = my_strdup(elem_at(buffer->history, ++buffer->currentHistoryPosition));
+    bufferChangeCommand(buffer, elem_at(buffer->history, buffer->currentHistoryPosition));
+}
+
+void bufferHistoryDown(struct Buffers * buffer) {
+    if(buffer->currentHistoryPosition == 0) return;
+    bufferResetOriginalHistory(buffer);
+    buffer->originalHistory = my_strdup(elem_at(buffer->history, --buffer->currentHistoryPosition));
+    bufferChangeCommand(buffer, elem_at(buffer->history, buffer->currentHistoryPosition));
 }
 
 void printDirectory() {
