@@ -1,6 +1,6 @@
 /* 
 Authors: Daniel Heyman & Carla Noshi
-Implements minishell
+Implements nsminishell
 */
 #include <stdio.h>
 #include <unistd.h>

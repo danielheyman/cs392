@@ -1,3 +1,7 @@
+/* 
+Authors: Daniel Heyman & Carla Noshi
+Implements nsminishell
+*/
 #ifndef _BUFFERRS_H_ 
 #define _BUFFERRS_H_
 
