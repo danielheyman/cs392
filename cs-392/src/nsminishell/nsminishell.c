@@ -14,11 +14,6 @@ Implements minishell
 #include "list.h"
 #include "buffers.h"
 
-/*
-    TODO
-    Dollar Sign: Program the ability to use the $() to pass output from one program into another (i.e. more $(myselect *.c))
-*/
-
 int pid;
 struct Buffers buffer;
 char ** vect;
@@ -118,6 +113,7 @@ int main(int argc, char* argv[])
                     char buffer[1024];
                     close(pipefd[1]);
                     while ((j = read(pipefd[0], buffer, sizeof(buffer))) != 0){
+                        strtok(buffer, "\n");
                         buffer[j] = '\0';
                         if(my_strcmp(buffer, "--error--") == 0) {
                             printw("Inner command within $() does not exist.\n");
@@ -130,7 +126,7 @@ int main(int argc, char* argv[])
                 free(vect);
                 if(error) break;
                 temp = my_strconcat(temp, &bufferContentCopy[i + 2]);
-                i -= my_strlen(bufferContentCopy) - my_strlen(temp) + 2;
+                i -= my_strlen(bufferContentCopy) - my_strlen(temp) + 3;
                 bufferContentCopy = temp;
                 foundStart = 0;
             }
@@ -154,6 +150,7 @@ int main(int argc, char* argv[])
             int pipefd[2];
             pipe(pipefd);
             
+            //endwin();
             if((pid = fork()) < 0) {
                 printw("Unable to fork.\n");
                 end();
@@ -162,20 +159,21 @@ int main(int argc, char* argv[])
                 dup2(pipefd[1], 1);
                 dup2(pipefd[1], 2);
                 close(pipefd[1]);
-                
+
                 if(execvp(vect[0], vect) < 0) {
                     printf("Command does not exist.\n");
                     exit(0);
                 }
             } else {
+                //while(wait(NULL) != pid);
                 char buffer[1024];
                 close(pipefd[1]);
                 while ((i = read(pipefd[0], buffer, sizeof(buffer))) != 0){
                     buffer[i] = '\0';
-                    printw(buffer);
-                    refresh();
+                    printw("%s", buffer);
                 }
             }
+            //refresh();
         }
         free(vect);
     }
