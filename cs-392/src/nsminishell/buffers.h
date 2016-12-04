@@ -74,7 +74,8 @@ void bufferMoveCursor(struct Buffers * buffer, int currentPosition) {
 
 void bufferReset(struct Buffers * buffer) {
     if(buffer->history == NULL) {
-        add_node_at(new_node(my_strdup(""), NULL, NULL), &buffer->history, 1);
+        char *temp = malloc(sizeof(char) * (1024));
+        add_node_at(new_node(temp, NULL, NULL), &buffer->history, 1);
         bufferLoadHistory(buffer);
     }
     if(buffer->length != 0) {
@@ -167,8 +168,8 @@ void bufferChangeCommand(struct Buffers * buffer, char * contentPointer) {
     buffer->length = my_strlen(contentPointer);
     buffer->currentPosition = buffer->length;
     buffer->content = contentPointer;
-    if(buffer->length > buffer->maxLength) buffer->maxLength = buffer->length;
     bufferMoveCursor(buffer, 0);
+    if(buffer->length > buffer->maxLength) buffer->maxLength = buffer->length;
     printw(buffer->content);
 }
 
