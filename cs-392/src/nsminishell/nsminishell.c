@@ -16,9 +16,6 @@ Implements minishell
 
 /*
     TODO
-    CTRL + "W": Cut a word into the clipboard. You should be abe to cut multiple words. (Try using it in bash!)
-    CTRL + "U": Cut a line into the clipboard. It should be able to work with the above commend. (Once again, try using it in bash!)
-    
     Dollar Sign: Program the ability to use the $() to pass output from one program into another (i.e. more $(myselect *.c))
 */
 
@@ -45,7 +42,7 @@ void end() {
 
 int main(int argc, char* argv[])
 {
-    int i, key;
+    int i, j, key;
     
     signal(SIGINT, stopFork);
     signal(SIGTSTP, ctrly);
@@ -89,7 +86,59 @@ int main(int argc, char* argv[])
         bufferMoveCursor(&buffer, buffer.length);
         buffer.content[buffer.length] = '\0';
         printw("\n");
-        vect = my_str2vect(buffer.content);
+        char * bufferContentCopy = my_strdup(buffer.content);
+        
+        int foundStart = 0;
+        i = 0;
+        bool error = false;
+        while(i < my_strlen(bufferContentCopy) - 1) {
+            if(foundStart == 0 && bufferContentCopy[i] == '$' && bufferContentCopy[i + 1] == '(') {
+                foundStart = i + 2;
+            } else if(foundStart != 0 && bufferContentCopy[i + 1] == ')') {
+                char * temp = my_strnconcat("", bufferContentCopy, foundStart - 2);
+                
+                vect = my_str2vect(my_strnconcat("", &bufferContentCopy[foundStart], i - foundStart + 1));
+                
+                int pipefd[2];
+                pipe(pipefd);
+                if((pid = fork()) < 0) {
+                    printw("Unable to fork.\n");
+                    end();
+                } else if(pid == 0) {
+                    close(pipefd[0]);
+                    dup2(pipefd[1], 1);
+                    dup2(pipefd[1], 2);
+                    close(pipefd[1]);
+                    
+                    if(execvp(vect[0], vect) < 0) {
+                        printf("--error--");
+                        exit(0);
+                    }
+                } else {
+                    char buffer[1024];
+                    close(pipefd[1]);
+                    while ((j = read(pipefd[0], buffer, sizeof(buffer))) != 0){
+                        buffer[j] = '\0';
+                        if(my_strcmp(buffer, "--error--") == 0) {
+                            printw("Inner command within $() does not exist.\n");
+                            error = true;
+                            break;
+                        }
+                        temp = my_strconcat(temp, buffer);
+                    }
+                }
+                free(vect);
+                if(error) break;
+                temp = my_strconcat(temp, &bufferContentCopy[i + 2]);
+                i -= my_strlen(bufferContentCopy) - my_strlen(temp) + 2;
+                bufferContentCopy = temp;
+                foundStart = 0;
+            }
+            i++;
+        }
+        if(error) continue;
+        
+        vect = my_str2vect(bufferContentCopy);
         
         if(my_strcmp("cd", vect[0]) == 0) {
             if(chdir(vect[1]) < 0) {
