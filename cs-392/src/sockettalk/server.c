@@ -24,6 +24,9 @@ int main(int argc, char* argv[])
     fd_set readfds;
     int port, newsockfd, newsockfds[99], max_fds = 99, sd, max_sd, activity, n;
     char * usernames[99];
+    for(int i = 0; i < max_fds; i++)  {
+      usernames[i] = NULL;
+    }
     socklen_t clilen;
     struct sockaddr_in serv_addr, cli_addr;
     char buffer[256];
